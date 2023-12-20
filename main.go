@@ -105,8 +105,17 @@ func handleProxy() {
 	server := &http.Server{
 		Addr: addr,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// lookup ip
+			ip,err := net.ResolveIPAddr("ip", r.Host)
+			if err != nil {
+				http.Error(w,"resolve ip err"+err.Error(),http.StatusServiceUnavailable)
+				return
+			}
+
+			os.Getenv("HTTP_PROXY")
+
 			dump, _ := httputil.DumpRequest(r, false)
-			fmt.Printf("[http] %s -> %s\n%s", r.RemoteAddr, r.Host, string(dump))
+			fmt.Printf("[http] %s -> %s/%s\n%s", r.RemoteAddr, r.Host,ip, string(dump))
 			// fmt.Printf("addr:%s,method:%s,host:%s,header:%s\n", r.RemoteAddr, r.Method, r.Host, r.Header)
 
 			if auth != "" {
