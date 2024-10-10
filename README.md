@@ -32,3 +32,18 @@ export https_proxy=$http_proxy
 
 goproxy
 ```
+
+## build
+
+### arm64
+```
+export GOOS=linux GOARCH=arm64
+export CGO_ENABLES=0
+go build
+```
+### amd64
+```
+export GOOS=linux GOARCH=amd64
+export CGO_ENABLES=0
+go build
+```
